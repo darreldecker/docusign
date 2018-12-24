@@ -3,7 +3,6 @@ package pages;
 import framework.FrameworkControl;
 import framework.WebdriverBase;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 public class ContractManagementDemoFormPage extends WebdriverBase {
     FrameworkControl txtFirstName = new FrameworkControl(By.name("firstname"), "First Name");

@@ -5,9 +5,6 @@ import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 public class JunitTestDriver extends WebdriverBase {
     private TestInfo testInfo;
     private String currentTestName;
@@ -27,13 +24,13 @@ public class JunitTestDriver extends WebdriverBase {
             int numTests = desc.testCount();
             log.debug("&&&  Suite starting with number of tests at: " + numTests);  // desc.getChildren() - Gets test cases
 
-            //beforeSuite(currentSuiteName);
+            beforeSuite(currentSuiteName);
         }
 
         @Override
         protected void finished(Description desc) {
             log.debug("&&&&  Suite completed!");
-            //afterSuite();
+            afterSuite();
         }
     };
 

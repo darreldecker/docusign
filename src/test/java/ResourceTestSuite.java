@@ -1,9 +1,8 @@
 import framework.JunitTestDriver;
 import framework.TestInfo;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import pages.*;
+import pages.HomePage;
+import pages.ResourceLibraryPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +10,6 @@ import java.util.List;
 public class ResourceTestSuite extends JunitTestDriver {
     public HomePage home = new HomePage();
     public ResourceLibraryPage resource = new ResourceLibraryPage();
-
-    @BeforeClass
-    public static void beforeClass() {
-        beforeSuite("ResourceTestSuite");
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        afterSuite();
-    }
 
     @Test
     @TestInfo(description = "Display report resources",

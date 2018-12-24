@@ -13,8 +13,6 @@ public class ResourceLibraryPage extends WebdriverBase {
     private FrameworkControl stcHeader = new FrameworkControl(By.xpath("//span[text()='SpringCM Resource Library']"));
     private FrameworkControl lnkMediaTypes = new FrameworkControl(By.linkText("Media Types"));
     private FrameworkControl lnkReports = new FrameworkControl(By.linkText("Reports"));
-//    private FrameworkControl lnkMediaTypes = new FrameworkControl(By.xpath("//a[contains(.,'Media Types')]"));
-//    private FrameworkControl lnkReports = new FrameworkControl(By.xpath("//a[contains(.,'Reports')]"));
 
     public boolean exists() {
         return stcHeader.exists(5);

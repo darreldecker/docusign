@@ -1,7 +1,5 @@
 import framework.JunitTestDriver;
 import framework.TestInfo;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import pages.ContractManagementDemoFormPage;
 import pages.ContractManagementPage;
@@ -18,16 +16,6 @@ public class SearchTestSuite extends JunitTestDriver {
     public String textToSearchFor = "contract management";
     public String expectedSearchResult = "Contract Management Software | SpringCM";
 
-    @BeforeClass
-    public static void beforeClass() {
-        beforeSuite("SearchTestSuite");
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        afterSuite();
-    }
-
     @Test
     @TestInfo(description = "Search for 'Contract Management' in SpringCM",
             categories = "test",
@@ -41,7 +29,7 @@ public class SearchTestSuite extends JunitTestDriver {
     }
 
     @Test
-    @TestInfo(description = "Search for 'Contract Management' in SpringCM",
+    @TestInfo(description = "Verify contract management form and video",
             categories = "test",
             level = "smoke")
     public void testSeeSpringCMInAction() {

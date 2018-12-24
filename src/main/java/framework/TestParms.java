@@ -7,10 +7,6 @@ public class TestParms {
     private static final Properties ENVIRONMENT_PROPERTIES = getPropertiesFile();
     private static TestParms me = new TestParms();
 
-    public String buildUrl = System.getenv("BUILD_URL");
-    public String pauseMessage = System.getenv("PauseMessage");
-    public String pauseFile = loadProperty("qa.test.pause.file");
-
     public String testingDomain = loadProperty("qa.test.domain");
     public String testLevel = loadProperty("qa.test.level");
     public String logLevel = loadProperty("qa.test.log.level");
