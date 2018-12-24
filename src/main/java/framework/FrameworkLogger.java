@@ -1,16 +1,13 @@
 package framework;
 
 import com.google.common.collect.Maps;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.output.NullOutputStream;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.junit.Assert;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
-
+import org.apache.commons.io.output.NullOutputStream;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.junit.Assert;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -42,39 +39,11 @@ public class FrameworkLogger {
     private boolean logToExtent = true;
 
     private static FrameworkLogger me = new FrameworkLogger();
-    private static String runVersionDescription;
-    private static String lastSuiteSlacked = "";
-
-    private static final String EXTENT_FAIL_ICON = "&emsp;<span class='fail label'>Fail</span>&emsp;";
 
     public static FrameworkLogger getLogger() {
         me.setLevel(Level.toLevel(testParms.logLevel, Level.INFO));
 
         return me;
-    }
-
-    public void initExtentReports(String appVersionString, String appiumUrl) {
-        String filePath = "build/reports/tests/MobileResults.html";
-
-        // ToDo: move this to startSuite() ???
-        if (extent == null) {
-            log.debug("Initializing Extent Reports!");
-
-            extent = new ExtentReports(filePath, true);
-            extent.addSystemInfo("Environment", testParms.testingDomain);
-            extent.addSystemInfo("Appium Server", appiumUrl);
-            extent.addSystemInfo("App Version", appVersionString);
-//            extent.assignProject(testParms.deviceOS);
-            extent.loadConfig(new File("src/main/resources/xml/report-config.xml"));
-
-//            runVersionDescription = appVersionString + " (" + (testParms.isAndroid ? "Android" : "iOS") + " " +
-//                    testParms.deviceVersion + " " + (testParms.isPhone ? "Phone" : "Tablet") +
-//                    ")  " + buildSlackEmoji() + "  " + testParms.testingDomain;
-
-            System.out.println("#####  ExtentReports at: " + System.getProperty("user.dir") + "/" + filePath);
-            System.out.println("[App Version] " + runVersionDescription);
-        }
-
     }
 
     public boolean isTestPassed() {
@@ -159,17 +128,6 @@ public class FrameworkLogger {
         this.errorNoExtent(header);
         this.errorNoExtent("! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
 
-        String extentMessage = "<div class=\"modalsection\">" +
-                "<a href=\"#\" data-featherlight='<div><pre>" + stackTrace.replace("\"", "&quot;").replace("'", "&apos;") +
-                "</pre></div>' title=\"Click for more details.\">" + header.replace("\"", "&quot;").replace("'", "&apos;") + "</a>" +
-                "</div>";
-
-//        if (screenshot) {
-//            this.screenshot(LogStatus.FAIL, extentMessage);
-//        } else {
-//            extentTestLog(LogStatus.FAIL, extentMessage, "");
-//        }
-
         exception = true;
     }
 
@@ -214,11 +172,6 @@ public class FrameworkLogger {
         exception = false;
         timeStarted = new Date();
         stepNumber = 1;
-
-//        if (extent != null) {
-//            extentTest = extent.startTest(testInfo.name, testInfo.description);
-//
-//        }
     }
 
     public void endTest() {
@@ -314,12 +267,10 @@ public class FrameworkLogger {
         if (message.length() > 50) {
             message = message.substring(0, 47) + "...";
         }
-        extentTestLog(LogStatus.PASS, "&emsp;<span class='success label'>Success</span>&emsp;" + extentVerifyText, message);
     }
 
     public void fail(String message) {
         this.errorNoExtent("    (FAIL)  " + message);
-//        screenshot(LogStatus.FAIL, EXTENT_FAIL_ICON + extentVerifyText, extentStepDetails);
     }
 
     public void skip() {
@@ -337,20 +288,8 @@ public class FrameworkLogger {
         skipped = true;
     }
 
-    public void jira(String jiraNum) {
-        jiraNum = "JIRA opened for this test: <a href=\"https://jira.corp.docusign.com/browse/" + jiraNum + "\" target=\"_blank\">" + jiraNum + "</a>";
-
-        this.info(" ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
-        this.warning(jiraNum);
-        this.info(" ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
-    }
-
     public boolean result(String message, Object expected, Object actual) {
         extentVerifyText = message;
-//        if (expected instanceof JsonObjectBase) {
-//            return resultForJsonObjects(message, (JsonObjectBase) expected, (JsonObjectBase) actual);
-//        }
-
         log.info("Verifying: " + extentVerifyText);
 
         boolean pass = compareExpectedAndActualValues(expected, actual);
@@ -643,46 +582,11 @@ public class FrameworkLogger {
         return mapCompareOutput.replace("}:", "}\n                                         ");
     }
 
-//    public void screenshot(String message) {
-//        this.screenshot(LogStatus.INFO, message, "");
-//    }
-//    private void screenshot(LogStatus status, String message) {
-//        this.screenshot(status, message, "");
-//    }
-
-//    private void screenshot(LogStatus status, String stepName, String detail) {
-//        try {
-//            File srcFile = AutoPage.getScreenshotAsFile();
-//            this.debug("  Screenshot taken: " + stepName.replace(EXTENT_FAIL_ICON, ""));
-//            FileUtils.moveFileToDirectory(srcFile, new File("build/reports/tests/screenshots"), true);
-//            extentTestLog(status, stepName + extentTest.addScreenCapture("./screenshots/" + srcFile.getName()), detail);
-//        } catch (Exception e) {
-//            log.info("log.screenshot() --> " + e.toString());
-//        }
-//    }
-
     private void extentTestLog(LogStatus logStatus, String stepName, String details) {
         if (extentTest != null)
             extentTest.log(logStatus, stepName, details);
     }
 
-
-    // *********************************
-    //    Toggle system out printing
-    // *********************************
-    public void disableSystemOut() {
-        try {
-            System.setOut(new PrintStream(new NullOutputStream()));
-        } catch (Exception e) {
-            log.warn(e.toString());
-        }
-    }
-
-    public void enableSystemOut() {
-        System.setOut(systemOut);
-    }
-
-    private String deviceName = null;
 
     Process p;
     ProcessBuilder builder;

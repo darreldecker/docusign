@@ -1,14 +1,6 @@
 package framework;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.Rectangle;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,13 +17,7 @@ public class FrameworkControl extends TestBase {
     private WebElement elementCache = null;
     protected Boolean useCache = true;
 
-    //*****************************************************
-    //                  Constructors
-    //*****************************************************
     public FrameworkControl() {
-        // UIAutomator2 gets very confused with re-using found element IDs.
-        // https://github.com/appium/appium-uiautomator2-server/wiki#behavioral-changes-with-respect-to-existing-appium-android-driverbootstrap
-//        if (testParms.isAndroid) this.useCache = false;
     }
 
     public FrameworkControl(By locator) {
@@ -45,17 +31,10 @@ public class FrameworkControl extends TestBase {
         this.controlName = controlName;
     }
 
-    //*****************************************************
-    //                      Getters
-    //*****************************************************
     public By getLocator() {
         return this.locator;
     }
 
-
-    //*****************************************************
-    //        P R I V A T E  -  K E E P  O U T
-    //*****************************************************
     protected WebElement findElement() {
         return findElement(wait.get(), true);
     }
@@ -115,10 +94,6 @@ public class FrameworkControl extends TestBase {
         }
     }
 
-
-    //*****************************************************
-    //                  P U B L I C
-    //*****************************************************
     public void hoverOverMe() {
         log.info("   [MoveTo] " + this.formatControlName());
         Actions action = new Actions(driver);
@@ -358,13 +333,6 @@ public class FrameworkControl extends TestBase {
         return this.formatControlName();
     }
 
-    /**
-     * This method is used to update the name of the control after it has already
-     * been instantiated so it prints nicely in the log. Mostly used for dynamic
-     * controls that are defined at runtime based on some data value.
-     *
-     * @param controlName The point to click, relative to the control
-     */
     public void setControlName(String controlName) {
         this.controlName = controlName;
     }
